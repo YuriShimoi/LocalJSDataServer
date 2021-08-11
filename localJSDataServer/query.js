@@ -290,6 +290,8 @@ window.localDBJSQuery = class localDBJSQuery {
     
     // Make sure equals comparison are using double equals symbol
     condition = condition.replaceAll(" = ", " == ");
+    // Removing double equals duplication caused by conversion of single to double
+    condition = condition.replaceAll(" ==  == ", " == ");
 
     // Splits OR/AND cases
     let cond_split = [];

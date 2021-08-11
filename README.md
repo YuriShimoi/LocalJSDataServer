@@ -35,7 +35,7 @@ Atua *client side*, ou seja, não possui requisição dos dados em um servidor e
 
 ## Primeiros Passos
 
-#### Importando o Código
+### Importando o Código
 
 Considerando uma estrutura semelhante:
 
@@ -63,7 +63,7 @@ core.js
 └── ...
 ```
 
-#### Definindo Variáveis
+### Definindo Variáveis
 
 Para dar início ao armazenamento em *cache* é necessário criar um *database* e uma estrutura de tabelas.
 
@@ -81,7 +81,7 @@ mydatabase.createTable("<table_name>", {'<column_name>':'<format>','<column_name
 | boolean | Valor binário do tipo **Boolean** |
 | date    | Objeto de *datetime* do tipo **Date** |
 
-#### Armazenamento e Resgate de Dados
+### Armazenamento e Busca de Dados
 
 Definida a estrutura, é possível alterá-la futuramente, mas primeiro o básico sobre armazenar e obter os dados posteriormente pode ser feito com os métodos `<database>.insertInto` e `<database>.select().from`.
 
@@ -105,5 +105,33 @@ result = query.fetch();
 console.log(result);
 >> [{id: 1, name: "maria"},
     {id: 2, name: "ethan"},
-    {id: 3, name: "ana"}]
+    {id: 3, name:   "ana"}]
 ```
+
+O armazenamento segue uma estrutura semelhante a SQL, ou seja, todos os dados registrados no *cache* pela ferramenta podem ser relacionados, e estas relações podem ser utilizadas para a requisição dos dados.
+
+```js
+// define database
+mydatabase = localDataServer("database");
+mydatabase.createTable("user", {'id':'number','name':'text'});
+mydatabase.createTable("message", {'user_id':'number','text':'text'});
+>> instance LocalDBJSTableClass
+
+// insert values
+mydatabase.insertInto("user", [[1, "maria"], [2,"ethan"], [3, "ana"]]);
+>> true
+mydatabase.insertInto("message", [[1, "Hello World!"], [1, "Hi"], [3,"Welcome"]]);
+>> true
+
+// query values
+query = mydatabase.select(["user.name","message.text"]).from(["user", "message"])
+                            .where("user.id = message.user_id");
+
+// get result
+result = query.fetch();
+console.log(result);
+>> [{name: "maria", text: "Hello World!"},
+    {name: "maria", text:           "Hi"},
+    {name:   "ana", text:      "Welcome"}]
+```
+
