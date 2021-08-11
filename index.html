@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CRUD Monitor</title>
+
+    <link rel="stylesheet" href="indexstyle.css">
+
+    <script src="localJSData/core.js"></script>
+    <script src="indexscript.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Monitor Template <button onclick="localJSDataViewerRun()">↺</button></h1>
+      <section>
+        <div class="flex-item-1">
+          <h3>LocalStorage</h3>
+          <table class="jsdata-table" localjsdata-server="local"></table>
+        </div>
+        <div class="flex-item-1">
+          <h3>SessionStorage</h3>
+          <table class="jsdata-table" localjsdata-server="session"></table>
+        </div>
+      </section>
+      <hr>
+      <section>
+        <div class="flex-item-1">
+          <label for="search-database">Tables from: </label><br>
+          <input id="search-database" type="text" placeholder="database" onchange="searchDatabase(this)">
+          <br><br>
+          <table id="search-database-table" class="jsdata-table" localjsdata-database=""></table>
+        </div>
+        <div class="flex-item-1">
+          <label for="describe-table">Describe: </label><br>
+          <input id="describe-table" type="text" placeholder="database.table" onchange="describeTable(this)">
+          <br><br>
+          <table id="describe-table-table" class="jsdata-table" localjsdata-describe=""></table>
+        </div>
+        <div class="flex-item-1">
+          <label for="search-table">Values from: </label><br>
+          <input id="search-table" type="text" placeholder="database.table" onchange="searchTable(this)">
+          <br><br>
+          <table id="search-table-table" class="jsdata-table" localjsdata-table=""></table>
+        </div>
+      </section>
+      <hr>
+    </div>
+  </body>
+</html>

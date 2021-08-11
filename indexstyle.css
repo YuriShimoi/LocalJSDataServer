@@ -1,0 +1,39 @@
+body {
+  text-align: center;
+  align-items: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#main {
+  margin: auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+section {
+  display: flex;
+}
+
+.flex-item-1 {
+  flex: 1;
+}
+
+.jsdata-table {
+  --border-style: 1px solid #ddd;
+  border-collapse: collapse;
+  margin: auto;
+}
+.jsdata-table, .jsdata-table td, .jsdata-table th {
+  border: var(--border-style);
+}
+.jsdata-table td, .jsdata-table th {
+  padding: 5px 8px;
+}
+.jsdata-table th {
+  background: #1b9eeb;
+  color: white;
+}
+
+.jsdata-table tbody tr:nth-child(even) td {
+  background-color: #eee;
+}
