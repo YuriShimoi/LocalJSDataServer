@@ -19,3 +19,8 @@ function localJSDataLoad(storageType) {
     loadedDb.import(loadedJSON);
   });
 }
+
+// Lazy load before module imports
+document.writeln(`
+<script>localJSDataLoad();</script>
+`);
