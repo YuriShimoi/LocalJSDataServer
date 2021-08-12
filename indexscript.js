@@ -1,7 +1,3 @@
-_documentready = setInterval((f)=>{if(document.readyState === "complete"){clearInterval(_documentready);delete _documentready;f();}}, 1, () => {
-  localJSDataViewerRun();
-});
-
 function searchDatabase(inp) {
   let myTable = document.getElementById("search-database-table");
   myTable.setAttribute("localjsdata-database", inp.value);

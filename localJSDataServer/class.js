@@ -114,6 +114,10 @@ window.LocalDBJSDatabaseClass = class LocalDBJSDatabaseClass {
   select(cols=null) {
     return new localDBJSQuery(cols, this._name);
   }
+
+  deleteFrom(tname) {
+    return this.table[tname].delete();
+  }
 }
 
 window.LocalDBJSTableClass = class LocalDBJSTableClass {
@@ -222,6 +226,34 @@ window.LocalDBJSTableClass = class LocalDBJSTableClass {
     }
 
     return new LocalDBJSAlterTableInternalClass(this);
+  }
+
+  delete() {
+    class LocalDBJSDeleteTableInternalClass {
+      constructor(table) {
+        this._table  = table;
+        this._backup = JSON.parse(JSON.stringify(table.values));
+        table.values = [];
+        table._origin._checkForSave();
+      }
+
+      where(condition) {
+        debugger;
+
+        // get splitted condition
+        let auxQueryable = new localDBJSQuery();
+        auxQueryable.where(condition);
+        let _varbag = auxQueryable._varbag;
+        let _colbag = auxQueryable._colbag;
+        condition   = auxQueryable._condition;
+
+        // restore values
+        this._table.values = this._backup;
+        this._table._origin._checkForSave();
+      }
+    }
+
+    return new LocalDBJSDeleteTableInternalClass(this);
   }
 }
 

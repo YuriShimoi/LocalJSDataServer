@@ -122,27 +122,27 @@ O armazenamento segue uma estrutura semelhante a SQL, ou seja, todos os dados re
 ```js
 // define database
 mydatabase = localDataServer("database");
-mydatabase.createTable("user", {'id':'number','name':'text'});
+mydatabase.createTable("user", {'id':'number','name':'text','age':'number'});
 mydatabase.createTable("message", {'user_id':'number','text':'text'});
 >> instance LocalDBJSTableClass
 
 // insert values
-mydatabase.insertInto("user", [[1, "maria"], [2,"ethan"], [3, "ana"]]);
+mydatabase.insertInto("user", [[1, "maria", 20], [2,"ethan", 21], [3, "ana", 22]]);
 >> true
-mydatabase.insertInto("message", [[1, "Hello World!"], [1, "Hi"], [3,"Welcome"]]);
+mydatabase.insertInto("message", [[1, "Hello"], [2, "Hi"], [2, "Bye"], [3,"Welcome"]]);
 >> true
 
 // query values
 query = mydatabase.select(["user.name","message.text"])
                   .from(["user", "message"])
-                  .where("user.id = message.user_id");
+                  .where("user.id = message.user_id AND user.age >= 21");
 
 // get result
 result = query.fetch();
 console.log(result);
->> [{name: "maria", text: "Hello World!"},
-    {name: "maria", text:           "Hi"},
-    {name:   "ana", text:      "Welcome"}]
+>> [{name: "ethan", text:      "Hi"},
+    {name: "ethan", text:     "Bye"},
+    {name:   "ana", text: "Welcome"}]
 ```
 
 ## Visualização dos Dados
@@ -185,7 +185,7 @@ Armazena a instância das tabelas.
 
 #### LocalDBJSDatabaseClass.alterTable(tname)
 
-> Redireciona para o método `alter()` da tabela especificada. Verifique o retorno na especificação dos [métodos da tabela](#localdbjstableclass).
+> Redireciona para o método `alter()` da tabela especificada. Verifique o retorno na especificação dos [métodos de tabela](#localdbjstableclass).
 
 - Argumentos:
     - `tname` *String* - Nome da tabela.
@@ -199,6 +199,13 @@ Cria uma tabela com o nome e formato especificados.
     - `obj` *Object* - Estrutura da tabela, o objeto deve seguir o formato `{'<column>':'<format>',...}`. Os formatos válidos de coluna estão listados [aqui](#definindo-vari%C3%A1veis).
 - Retorno:
     - `LocalDBJSTableClass|Boolean` - Instância da tabela criada, ou `false` caso não seja possível criar.
+
+#### LocalDBJSDatabaseClass.deleteFrom(tname)
+
+> Redireciona para o método `delete()` da tabela especificada. Verifique o retorno na especificação dos [métodos de tabela](#localdbjstableclass).
+
+- Argumentos:
+    - `tname` *String* - Nome da tabela.
 
 #### LocalDBJSDatabaseClass.drop()
 
@@ -227,7 +234,7 @@ Importa os dados do *JSON* especificado para esta instância de *database*.
 
 #### LocalDBJSDatabaseClass.insertInto(tname, vals, cols=null)
 
-> Redireciona para o método `insert()` da tabela especificada. Verifique o retorno na especificação dos [métodos da tabela](#localdbjstableclass).
+> Redireciona para o método `insert()` da tabela especificada. Verifique o retorno na especificação dos [métodos de tabela](#localdbjstableclass).
 
 - Argumentos:
     - `tname` *String* - Nome da tabela;
@@ -276,6 +283,10 @@ Retorna as tabelas registradas neste *database*.
 -
 
 #### LocalDBJSTableClass.alter()
+
+-
+
+#### LocalDBJSTableClass.delete()
 
 -
 
