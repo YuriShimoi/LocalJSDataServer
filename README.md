@@ -255,7 +255,7 @@ Ativa ou desativa o salvamento automático em *cache*.
 - Retorno:
     - `` - 
 
----
+<hr style="height:0;border:none;border-top:1px solid gray"></hr>
 
 ### LocalDBJSTableClass.values
 
