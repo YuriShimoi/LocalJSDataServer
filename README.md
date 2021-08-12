@@ -19,6 +19,12 @@
 
 
 
+## Data Viewer
+
+
+
+## General Documentation
+
 ---
 
 # pt-BR
@@ -139,7 +145,7 @@ console.log(result);
     {name:   "ana", text:      "Welcome"}]
 ```
 
-## Visualização do Banco
+## Visualização dos Dados
 
 ### Modelo de Visualizador
 
