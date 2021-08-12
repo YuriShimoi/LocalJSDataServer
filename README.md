@@ -157,76 +157,114 @@ Neste mesmo repositório você pode encontrar um arquivo [index.html](https://gi
 ## Documentação Geral
 
 ### localDataServer(databasename, inSession=false)
-Cria ou retorna a instância do *database* com o nome especificado.
+
+Cria ou retorna a instância do *database* com o nome especificado.  
+
 - Argumentos:
     - `databasename` *String* - Nome do *database*, se o nome já tiver sido definido no *cache* então o já existente será enviado no retorno.
     - `inSession` *Boolean* - Por padrão é `false` e os dados guardados neste *database* serão armazenados no *cache* local, se `true` eles serão armazenados no *cache* da sessão, uma vez criado o *database* ele não pode trocar o tipo de *cache*.
 - Retorno:
     - `LocalDBJSDatabaseClass` - Instância do *database*.
 
+---
+
 ### LocalDBJSDatabaseClass.table
-Armazena a instância das tabelas.
+
+Armazena a instância das tabelas.  
+
 - Retorno:
-    - `[LocalDBJSTableClass]` *Array* - Lista da instância das tabelas registradas no *database*.
+    - `[LocalDBJSTableClass]` - *Array* da instância das tabelas registradas no *database*.
 
 ### LocalDBJSDatabaseClass.alterTable(tname)
-Redireciona para o método `alter()` da tabela especificada.
+
+> Redireciona para o método `alter()` da tabela especificada. Verifique o retorno na especificação do método da tabela.
+
 - Argumentos:
     - `tname` *String* - Nome da tabela.
-- Retorno:
-    - `` - 
 
 ### LocalDBJSDatabaseClass.createTable(tname, obj)
+
+Cria uma tabela com o nome e formato especificados.
+
 - Argumentos:
-    - `tname` *String* - 
-    - `obj` - 
+    - `tname` *String* - Nome da tabela.
+    - `obj` *Object* - Estrutura da tabela, o objeto deve seguir o formato `{'<column>':'<format>',...}`. Os formatos válidos de coluna estão listados [aqui](#definindo-vari%C3%A1veis).
 - Retorno:
-    - `` - 
+    - `LocalDBJSTableClass|Boolean` - Instância da tabela criada, ou `false` caso não seja possível criar.
 
 ### LocalDBJSDatabaseClass.drop()
-- Retorno:
-    - `` - 
+
+Apaga todos os dados salvos no *cache* e apaga as instâncias de tabela deste *database*.
 
 ### LocalDBJSDatabaseClass.dropTable(tname)
+
+Apaga a instância da tabela especificada.
+
 - Argumentos:
-    - `tname` *String* - 
-- Retorno:
-    - `` - 
+    - `tname` *String* - Nome da tabela.
 
 ### LocalDBJSDatabaseClass.export()
+
+Exporta o *database* em *JSON* com o formato necessário para o método `import()`.
+
 - Retorno:
-    - `` - 
+    - `String` - *JSON* com os dados das tabelas.
 
 ### LocalDBJSDatabaseClass.import(localDBJSDataJSON)
+
+Importa os dados do *JSON* especificado para esta instância de *database*.
+
 - Argumentos:
-    - `localDBJSDataJSON` - 
-- Retorno:
-    - `` - 
+    - `localDBJSDataJSON` *String* - *JSON* com o formato retornado pelo método `export()`.
 
 ### LocalDBJSDatabaseClass.insertInto(tname, vals, cols=null)
+
+
+
 - Argumentos:
-    - `tname` *String* - 
+    - `tname` *String* - Nome da tabela.
     - `vals` - 
     - `cols` - 
 - Retorno:
     - `` - 
 
 ### LocalDBJSDatabaseClass.saveState()
-- Retorno:
-    - `` - 
+
+Salva os dados da instância no *cache*.
 
 ### LocalDBJSDatabaseClass.select(cols=null)
+
+
+
 - Argumentos:
     - `cols` - 
 - Retorno:
     - `` - 
 
 ### LocalDBJSDatabaseClass.setAutoSave(autoSaveStat)
+
+Ativa ou desativa o salvamento automático em *cache*.
+
 - Argumentos:
-    - `autoSaveStat` - 
+    - `autoSaveStat` *Boolean* - Por padrão é `true` e salva automaticamente no *cache* sempre que uma alteração é feita na instância, seja a criação, alteração ou inserção ou remoção de dados em uma tabela, se `false` o armazenamento em *cache* só é executado quando o método `saveState()` for chamado.
+
+### LocalDBJSDatabaseClass.tables()
+
+
+
 - Retorno:
     - `` - 
 
-### LocalDBJSDatabaseClass.tables()
-- Retorno:
-    - `` - 
+---
+
+### LocalDBJSTableClass.values
+
+a
+
+### LocalDBJSTableClass</dot>.name
+
+a
+
+### LocalDBJSTableClass.describe
+
+a
