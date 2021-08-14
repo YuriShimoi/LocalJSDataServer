@@ -239,7 +239,9 @@ Importa os dados do *JSON* especificado para esta instância de *database*.
 - Argumentos:
     - `tname` *String* - Nome da tabela;
     - `vals` *String|Number|Boolean|Date|Array* - Valores a serem inseridos na tabela, pode ser um valor único caso haja somente uma coluna especificada, uma única *array* com os dados ordenados igualmente à *array* de colunas ou uma *array* destas (E.g. `<value>`, `[<values>]` ou `[[<values>],[<values>]]`);
-    - `cols` *String|Array|null* - por padrão é `null` e busca todas as colunas desta tabela. São as colunas onde os dados serão inseridos, deve ter o formato coerente com o formato dos dados inseridos.
+    - `cols` *String|Array|null* - Por padrão é `null` e busca todas as colunas desta tabela. São as colunas onde os dados serão inseridos, deve ter o formato coerente com o formato dos dados inseridos.
+- Retorno:
+    - `Boolean` - Se a operação teve sucesso.
 
 #### LocalDBJSDatabaseClass.saveState()
 
@@ -247,7 +249,7 @@ Salva os dados da instância no *cache*.
 
 #### LocalDBJSDatabaseClass.select(cols=null)
 
-
+Seleciona colunas das estruturas das tabelas e retorna uma `localDBJSQuery` para buscar os dados salvos no *database*.
 
 - Argumentos:
     - `cols` *[String]* - *Array* das colunas que serão retornadas, o formato deve seguir o padrão `"<table>.<column>"`.
@@ -272,42 +274,80 @@ Retorna as tabelas registradas neste *database*.
 
 #### LocalDBJSTableClass.describe
 
--
+Formato da tabela.
+> Não altere o formato por esta variável a menos que tenha certeza do que está fazendo, a biblioteca opera diretamente neste formato e ele é internamente sincronizados com o *cache*, alterações manuais não possuem garantia de persistência e podem resultar nos dados serem corrompidos ou perdidos no caso de uma alteração manual.
+
+- Retorno:
+    - `Object` - Estrutura da tabela, o objeto segue o formato `{'<column>':'<format>',...}`. Os formatos válidos de coluna estão listados [aqui](#definindo-vari%C3%A1veis).
 
 #### LocalDBJSTableClass</dot>.name
 
--
+Nome da tabela.
+
+- Retorno:
+    - `String`
 
 #### LocalDBJSTableClass.values
 
--
+Valores guardados na tabela.
+> Não altere os valores por esta variável a menos que tenha certeza do que está fazendo, a biblioteca opera diretamente nestes valores e eles são internamente sincronizados com o *cache*, alterações manuais não possuem garantia de persistência e podem resultar nos dados serem corrompidos ou perdidos no caso de uma alteração manual.
+
+- Retorno:
+    - `[Object]` - *Array* com o valores que seguem o formato da tabela.
 
 #### LocalDBJSTableClass.alter()
 
--
+
+
+- Retorno:
+    - `` - 
 
 #### LocalDBJSTableClass.delete()
 
--
+
+
+- Retorno:
+    - `` - 
 
 #### LocalDBJSTableClass.insert(vals, cols = null)
 
--
+Insere valores na tabela.
+
+- Argumentos:
+    - `vals` *String|Number|Boolean|Date|Array* - Valores a serem inseridos na tabela, pode ser um valor único caso haja somente uma coluna especificada, uma única *array* com os dados ordenados igualmente à *array* de colunas ou uma *array* destas (E.g. `<value>`, `[<values>]` ou `[[<values>],[<values>]]`);
+    - `cols` *String|Array|null* - Por padrão é `null` e busca todas as colunas desta tabela. São as colunas onde os dados serão inseridos, deve ter o formato coerente com o formato dos dados inseridos.
+- Retorno:
+    - `Boolean` - Se a operação teve sucesso.
 
 #### LocalDBJSTableClass.print()
 
--
+Desenha uma tabela com os dados no console. utilizando `console.table()`.
 
 ### LocalDBJSQuery
 
 #### LocalDBJSQuery.fetch(printAtEnd=false)
 
--
+
+
+- Argumentos:
+    - `` ** - 
+- Retorno:
+    - `` - 
 
 #### LocalDBJSQuery.from(table)
 
--
+
+
+- Argumentos:
+    - `` ** - 
+- Retorno:
+    - `LocalDBJSQuery` - *Query* com a nova configuração.
 
 #### LocalDBJSQuery.where(condition)
 
--
+
+
+- Argumentos:
+    - `` ** - 
+- Retorno:
+    - `LocalDBJSQuery` - *Query* com a nova configuração.

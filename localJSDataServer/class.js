@@ -238,17 +238,45 @@ window.LocalDBJSTableClass = class LocalDBJSTableClass {
       }
 
       where(condition) {
-        debugger;
-
         // get splitted condition
         let auxQueryable = new localDBJSQuery();
         auxQueryable.where(condition);
-        let _varbag = auxQueryable._varbag;
-        let _colbag = auxQueryable._colbag;
-        condition   = auxQueryable._condition;
+        let varbag = auxQueryable._varbag;
+        let colbag = auxQueryable._colbag.map(c => `reference_bag.${c}`.replace('*.',`${this._table.name}.`));
+        condition  = auxQueryable._condition;
 
-        // restore values
-        this._table.values = this._backup;
+        // Replace columns from bag
+        let col_regex = /\[([0-9]+)\]/;
+        let matches   = condition.match(col_regex);
+        while(matches) {
+          condition = condition.replace(matches[0], colbag[matches[1]]);
+          matches   = condition.match(col_regex);
+        }
+
+        // Replace variables from bag
+        let var_regex = /{([0-9]+)}/;
+        let var_index = [];
+        matches = condition.match(var_regex);
+        while(matches) {
+          var_index.push(matches.index);
+          condition = condition.replace(matches[0], "");
+          matches   = condition.match(var_regex);
+        }
+        // Reverse to work around with indexes error
+        varbag.reverse();
+        var_index.reverse().forEach((ci, vi) => {
+          condition = condition.substring(0, ci) + varbag[vi] + condition.substr(ci);
+        });
+
+        // return values from backup
+        let reference_bag = {};
+        this._backup.forEach(v => {
+          reference_bag[this._table.name] = v;
+          if(!(eval(condition))) {
+            this._table.values.push(v);
+          }
+        });
+        
         this._table._origin._checkForSave();
       }
     }
