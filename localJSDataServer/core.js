@@ -10,17 +10,18 @@ importScript("query","js");
 importScript("viewer","js");
 
 function localJSDataLoad(storageType) {
-  let loadedStorage   = storageType == "session"? sessionStorage: localStorage;
+  let inSession       = storageType == "session";
+  let loadedStorage   = inSession? sessionStorage: localStorage;
   let loadedDatabases = loadedStorage.getItem(localDBJSUtils._storageKeyName);
-  loadedDatabases = loadedDatabases? loadedDatabases.split('-'): [];
+  loadedDatabases = loadedDatabases? loadedDatabases.split('-').filter(Boolean): [];
   loadedDatabases.forEach(ldb => {
-    let loadedDb   = localDataServer(ldb);
+    let loadedDb   = localDataServer(ldb, inSession);
     let loadedJSON = loadedStorage.getItem(`${localDBJSUtils._storageKeyName}-${ldb}`);
-    loadedDb.import(loadedJSON);
+    if(loadedJSON) loadedDb.import(loadedJSON);
   });
 }
 
-// Lazy load before module imports
+// Lazy load before module imports (session databases too, they were never reloaded)
 document.writeln(`
-<script>localJSDataLoad();</script>
+<script>localJSDataLoad(); localJSDataLoad("session");</script>
 `);

@@ -22,6 +22,8 @@ window.LocalDBJSDataStoragerClass = class LocalDBJSDataStoragerClass {
 
 window.LocalDBJSDatabaseClass = class LocalDBJSDatabaseClass {
   _autoSave = true;
+  _saveQueued = false;
+  _lastSaved = null;
   table = {};
   
   constructor(name, inSession) {
@@ -34,23 +36,34 @@ window.LocalDBJSDatabaseClass = class LocalDBJSDatabaseClass {
   }
 
   saveState() {
-    // TASK: Thats actually on brute mode, drops and import everything,
-    //       looking for some soft actualization with table changes specification
-    let dataJSON   = this.export();
+    // still writes the whole database, but only once per batch of changes (see _checkForSave)
+    // and only when its content actually changed
+    this._saveQueued = false;
+    let dataJSON = this.export();
+    if(dataJSON === this._lastSaved) return;
+
     let storedData = this._storage.getItem(localDBJSUtils._storageKeyName);
     let newStored  = storedData? storedData.split('-'): [];
     if(!newStored.includes(this._name)) newStored.push(this._name);
-    this._storage.setItem(localDBJSUtils._storageKeyName, newStored.join('-'));
-    this._storage.setItem(`${localDBJSUtils._storageKeyName}-${this._name}`, dataJSON);
+    try {
+      this._storage.setItem(localDBJSUtils._storageKeyName, newStored.join('-'));
+      this._storage.setItem(`${localDBJSUtils._storageKeyName}-${this._name}`, dataJSON);
+      this._lastSaved = dataJSON;
+    }
+    catch(err) {
+      // usually the ~5MB storage quota
+      console.error(`LocalDBJS: couldn't save '${this._name}' (${err.name}). Data is kept in memory only.`);
+    }
   }
 
   drop() {
     this.table = {};
+    this._lastSaved = null;
     this._storage.removeItem(`${localDBJSUtils._storageKeyName}-${this._name}`);
-    let storedData = this._storage.getItem(localDBJSUtils._storageKeyName)?? "";
+    let storedData = (this._storage.getItem(localDBJSUtils._storageKeyName)?? "").split('-');
+    // exact names: "a" must not match "ab"
     if(storedData.includes(this._name)) {
-      storedData = storedData.split('-').filter(db => db != this._name).join('-');
-      this._storage.setItem(localDBJSUtils._storageKeyName, storedData);
+      this._storage.setItem(localDBJSUtils._storageKeyName, storedData.filter(db => db != this._name).join('-'));
     }
   }
 
@@ -68,9 +81,15 @@ window.LocalDBJSDatabaseClass = class LocalDBJSDatabaseClass {
     this._checkForSave();
   }
 
+  /** Saves once after the current batch of changes (e.g. a loop of inserts) instead of after each one. */
   _checkForSave() {
-    if(this._autoSave) this.saveState();
+    if(!this._autoSave || this._saveQueued) return;
+    this._saveQueued = true;
+    queueMicrotask(() => {
+      if(this._saveQueued) this.saveState();
+    });
   }
+
 
   tables() {
     return Object.keys(this.table);
